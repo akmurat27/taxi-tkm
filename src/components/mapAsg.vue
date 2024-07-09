@@ -1,21 +1,30 @@
 <template>
     <div id="map" style="height: 100vh;"></div>
   </template>
-  
-  <script>
+
+<script>
   import L from 'leaflet';
+  import { icon } from 'leaflet';
   import 'leaflet/dist/leaflet.css';
+ // Example in main.js or App.vue
+  delete L.Icon.Default.prototype._getIconUrl;
+
+  L.Icon.Default.mergeOptions({
+    iconRetinaUrl: require('leaflet/dist/images/marker-icon-2x.png').default,
+    shadowUrl: require('leaflet/dist/images/marker-shadow.png').default,
+  });
+
   
   export default {
-    name: 'MapComponent',
-    data() {
-      return {
-        map: null
-      };
+    component: {
+      icon
     },
     mounted() {
-      this.initMap();
+      this.$nextTick(() => {
+        this.initMap();
+      });
     },
+
     methods: {
       initMap() {
         // Initialize the map
@@ -37,7 +46,7 @@
   
   <style scoped>
   #map {
-    height: 100vh;
+    height: 700px !important;
   }
   </style>
   

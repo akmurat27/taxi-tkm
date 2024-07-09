@@ -11,7 +11,7 @@
             <button>
               <img src="@/assets/icons/hamburger-circle-icon-512x512-4mthfq0v.png" class="w-[40px] h-[42px] block md:block lg:hidden">
             </button>
-            <span class="hidden md:hidden lg:block mx-[20px] text-white">О нас</span>
+            <span class="hidden md:hidden lg:block mx-[20px] text-white ">О нас</span>
             <button class="hidden md:hidden lg:block mx-[20px] border border-white rounded-full w-[250px] h-[40px] text-white">Установить приложение</button>
             <span class="hidden md:hidden lg:block mx-[20px] text-white">Контакты</span>
           </div>
@@ -31,9 +31,9 @@
       </div>
     </div>
     <MapAsg />
-    <div class="mx-[50px] p-[15px] md:mx-[50px] lg:mx-[250px] w-auto h-auto flex flex-col justify-center">
+    <div class="mx-[50px] p-[15px] md:mx-[50px] lg:mx-[250px] w-auto h-auto  flex flex-col justify-center">
       <div class="flex flex-col items-center mb-[80px] mt-[60px]">
-        <span class="text-[55px] mt-[20px]">О нас</span>
+        <span class="contact text-[55px] mt-[20px] cursor-pointer ">О нас</span>
         <div class="bg-yellow-500 w-[60px] h-[3px] my-2"></div>
       </div>
       <div class="flex flex-col items-center justify-center flex-wrap">
@@ -54,7 +54,7 @@
     </div>
     <div class="p-[15px] mx-[50px] mb-[90px] h-auto ">
       <div class="flex flex-col items-center mb-[80px] mt-[60px]">
-        <span class="text-[55px] mt-[20px]">Способы оплаты</span>
+        <span class="text-[55px] mt-[20px]  cursor-pointer">Способы оплаты</span>
         <div class="bg-yellow-500 w-[60px] h-[3px] my-2"></div>
       </div>
       <div class="flex flex-col items-center justify-center flex-wrap">
@@ -64,7 +64,7 @@
         <img src="@/assets/icons/card.png">
       </div>
       <div class="flex justify-center">
-        <span class="underline" style="color: #999999;">Подробное описание оплаты</span>
+        <span class="underline cursor-pointer" style="color: #999999;">Подробное описание оплаты</span>
       </div>
     </div>
     <div class="h-auto gradient-bg py-[70px] flex flex-col items-center">
@@ -76,7 +76,7 @@
         <span class="text-white mb-[10px]">Не ждите звонка диспетчера, заказывайте такси всего в 2 клика.</span>
         <span class="text-white mb-[10px]">Скачивайте приложение Online <b> Taxi.tkm </b> прямо сейчас.</span>
       </div>
-      <button class="border border-white rounded-full flex items-center justify-center w-[200px] h-[60px]">
+      <button class="border border-white rounded-full hover:bg-yellow-500 flex items-center justify-center w-[200px] h-[60px]">
         <img src="@/assets/icons/free-icon-android-160138.png" class="mr-2 w-[43px] h-[43px]">
         <span class="text-white ml-2">Скачать для <br> Android</span>
       </button>
@@ -104,6 +104,7 @@
         <div class="flex flex-col px-[15px] items-center">  
           <span class="text-white mb-[10px] text-[14px]">По вопросам участия и партнерства обращайтесь </span> 
           <span class="text-white mb-[10px] text-[14px]"> +99362571500</span>
+          <span></span>
         </div>
       </div>  
     </div>
@@ -112,14 +113,13 @@
 
 <script>
 import MapAsg from './mapAsg.vue';
-
 export default {
   name: 'HelloWorld',
   props: {
     msg: String
   },
   components: {
-    MapAsg
+    MapAsg,
   }
 }
 </script>
@@ -130,4 +130,3 @@ export default {
   background: linear-gradient(to right, black, rgb(255, 187, 0));
 }
 </style>
-

@@ -9,9 +9,12 @@
   },
   "dependencies": {
     "core-js": "^3.8.3",
+    "gsap": "^3.12.5",
     "leaflet": "^1.9.4",
+    "leaflet-vue": "^0.1.0",
     "material-design-icons": "^3.0.1",
-    "vue": "^3.2.13",
+    "split-type": "^0.3.4",
+    "vue": "^3.4.31",
     "vue-leaflet": "^0.1.0"
   },
   "devDependencies": {
