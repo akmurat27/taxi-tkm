@@ -1,20 +1,13 @@
 <template>
   <div class="hello">
-    <nav class="fixed p-[20px] top-0 left-0 w-full gradient-bg">
+    <nav class="fixed shadow p-[20px] top-0 left-0 w-full gradient-bg">
       <div class="container mx-auto">
         <div class="flex justify-around items-center">
           <div class="navbar-logo flex items-center">
             <img src="@/assets/logo/0be45002ad090ad572.png" class="w-[81px] h-[81px]">
             <span class="ml-[20px] text-white">Online Taxi.tkm</span>
           </div>
-          <div class="navbar-right flex items-center">
-            <button>
-              <img src="@/assets/icons/hamburger-circle-icon-512x512-4mthfq0v.png" class="w-[40px] h-[42px] block md:block lg:hidden">
-            </button>
-            <span class="hidden md:hidden lg:block mx-[20px] text-white ">О нас</span>
-            <button class="hidden md:hidden lg:block mx-[20px] border border-white rounded-full w-[250px] h-[40px] text-white">Установить приложение</button>
-            <span class="hidden md:hidden lg:block mx-[20px] text-white">Контакты</span>
-          </div>
+          <navBar />
         </div>
       </div>
     </nav>
@@ -27,13 +20,15 @@
           Всего пару этапов по экрану и вы вызвали машину в нужную точку.
         </span>
         <button class="block md:hidden lg:block text-white border border-white rounded-full w-[250px] h-[40px] mt-[50px]">Установить приложение</button>
-        <a href="#" class="text-white underline hidden md:hidden lg:block mt-2">Заказ онлайн</a>
+        <router-link to="/inputAdd">
+          <a href="#" class="text-white underline hidden md:hidden lg:block mt-2">Заказ онлайн</a>
+        </router-link>
       </div>
     </div>
     <MapAsg />
     <div class="mx-[50px] p-[15px] md:mx-[50px] lg:mx-[250px] w-auto h-auto  flex flex-col justify-center">
       <div class="flex flex-col items-center mb-[80px] mt-[60px]">
-        <span class="contact text-[55px] mt-[20px] cursor-pointer ">О нас</span>
+        <span class="contact text-[55px] mt-[20px] cursor-pointer">О нас</span>
         <div class="bg-yellow-500 w-[60px] h-[3px] my-2"></div>
       </div>
       <div class="flex flex-col items-center justify-center flex-wrap">
@@ -54,7 +49,7 @@
     </div>
     <div class="p-[15px] mx-[50px] mb-[90px] h-auto ">
       <div class="flex flex-col items-center mb-[80px] mt-[60px]">
-        <span class="text-[55px] mt-[20px]  cursor-pointer">Способы оплаты</span>
+        <span class="text-[55px] mt-[20px] cursor-pointer">Способы оплаты</span>
         <div class="bg-yellow-500 w-[60px] h-[3px] my-2"></div>
       </div>
       <div class="flex flex-col items-center justify-center flex-wrap">
@@ -104,7 +99,6 @@
         <div class="flex flex-col px-[15px] items-center">  
           <span class="text-white mb-[10px] text-[14px]">По вопросам участия и партнерства обращайтесь </span> 
           <span class="text-white mb-[10px] text-[14px]"> +99362571500</span>
-          <span></span>
         </div>
       </div>  
     </div>
@@ -113,6 +107,8 @@
 
 <script>
 import MapAsg from './mapAsg.vue';
+import navBar from './navBar.vue';
+
 export default {
   name: 'HelloWorld',
   props: {
@@ -120,7 +116,8 @@ export default {
   },
   components: {
     MapAsg,
-  }
+    navBar
+  },
 }
 </script>
 
