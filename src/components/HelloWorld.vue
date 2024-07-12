@@ -1,18 +1,33 @@
 <template>
   <div class="hello">
-    <nav class="fixed shadow p-[20px] top-0 left-0 w-full gradient-bg">
-      <div class="container mx-auto">
-        <div class="flex justify-around items-center">
-          <div class="navbar-logo flex items-center">
-            <img src="@/assets/logo/0be45002ad090ad572.png" class="w-[81px] h-[81px]">
-            <span class="ml-[20px] text-white">Online Taxi.tkm</span>
-          </div>
-          <navBar />
+    <nav class="fixed z-50 w-[100%] shadow gradient-bg">
+      <div class="flex justify-around items-center p-[20px]">
+        <div class="navbar-logo flex items-center">
+          <img src="@/assets/logo/0be45002ad090ad572.png" class="w-[81px] h-[81px]">
+          <span class="ml-[20px] text-white">Online Taxi.tkm</span>
+        </div>
+        <button @click="toggleButton" class="block lg:hidden">
+          <img src="@/assets/icons/free-icon-menu-bar-7107939.png" class="w-[40px] h-[42px]">
+        </button>
+        <div class="hidden md:hidden lg:block">
+          <span class="text-white p-[10px]">О нас</span>
+          <span class="text-white p-[10px]">Установить приложение</span>
+          <span class="text-white p-[10px]">Контакты</span>
         </div>
       </div>
+      <div v-if="buttonOn" class="lg:hidden flex flex-col items-center bg-gradient-to-r from-gray-700 to-gray-500">
+        <span class="text-white p-[10px]">О нас</span>
+        <div class="bg-yellow-500 w-[180px] h-[1px]"></div>
+        <span class="text-white p-[10px]">Установить приложение</span>
+        <div class="bg-yellow-500 w-[180px] h-[1px]"></div>
+        <span class="text-white p-[10px]">Контакты</span>
+        <div class="bg-yellow-500 w-[180px] h-[1px]"></div>
+      </div>
     </nav>
-    <div class="hero-section gradient-bg flex justify-center items-center flex-col md:flex md:flex-col md:items-center lg:flex lg:flex-row h-[1000px]">
-      <img src="@/assets/pic/20462a57a3a9bf8435.png" class="w-[171px] h-[128px] md:w-[533px] md:h-[400px]">
+    <div class="w-[100%] hero-section gradient-bg flex justify-center items-center flex-col md:flex md:flex-col md:items-center lg:flex lg:flex-row h-[1000px] md:h-[1300px] lg:h-[965px]">
+      <router-link to="/btn">
+        <img src="@/assets/pic/20462a57a3a9bf8435.png" class="w-[171px] h-[128px] md:w-[533px] md:h-[400px]">
+      </router-link>
       <div class="flex items-start flex-col">
         <span class="hidden md:block lg:block text-white text-4xl pt-2 pb-10">Мобильное приложение <br> в Ашхабаде</span>
         <span class="hidden md:block lg:block text-white mb-[50px]">  Современный и быстрый способ заказа такси.  
@@ -20,9 +35,7 @@
           Всего пару этапов по экрану и вы вызвали машину в нужную точку.
         </span>
         <button class="block md:hidden lg:block text-white border border-white rounded-full w-[250px] h-[40px] mt-[50px]">Установить приложение</button>
-        <router-link to="/inputAdd">
-          <a href="#" class="text-white underline hidden md:hidden lg:block mt-2">Заказ онлайн</a>
-        </router-link>
+        <a href="#" class="text-white underline hidden md:hidden lg:block mt-2">Заказ онлайн</a>
       </div>
     </div>
     <MapAsg />
@@ -107,17 +120,27 @@
 
 <script>
 import MapAsg from './mapAsg.vue';
-import navBar from './navBar.vue';
+// import navBar from './navBar.vue';
 
 export default {
   name: 'HelloWorld',
+  data(){
+    return{
+      buttonOn: false,
+    }
+  },
   props: {
     msg: String
   },
   components: {
     MapAsg,
-    navBar
+    // navBar
   },
+  methods: {
+      toggleButton() {
+        this.buttonOn = !this.buttonOn; // Toggle the state of buttonOn
+      }
+    }
 }
 </script>
 

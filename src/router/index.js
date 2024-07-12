@@ -4,14 +4,14 @@ import { createRouter, createWebHistory } from 'vue-router';
 
 const routes = [
   {
-    path: '/inputAdd',
-    name: 'About',
-    component: "@/components/inputAdd.vue"
+    path: '/btn',
+    name: 'btn',
+    component: () => import(/* webpackChunkName: "about" */ '@/components/btnComp.vue')
   },
   {
     path: '/helloworld',
     name: 'About',
-    component: "@/components/HelloWorld.vue"
+    component: () => import(/* webpackChunkName: "about" */ '@/components/HelloWorld.vue')
   }
 ];
 
