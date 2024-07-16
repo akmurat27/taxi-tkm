@@ -1,48 +1,48 @@
-<!-- ClickableMarkersMap.vue -->
 <template>
-  <div ref="map" class="leaflet-map"></div>
+  <div>
+    <div ref="map" class="map z-40"></div>
+</div>
 </template>
 
 <script>
-import { onUnmounted } from 'vue';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import markerIcon from '@/assets/gps/gps.png';
 
 export default {
-  name: 'ClickableMarkersMap',
+  name: 'MapComponent',
   data() {
     return {
-      markers: [], // Array to store added 
-      polylines: [] // Array to store polylines connecting markers
+      map: null,
+      markers: [ // Array to store markers with their coordinates and popup content
+        { coords: [37.9601, 58.3265], popupContent: 'From: Ashgabat' },
+        { coords: [38.9697, 59.5563], popupContent: 'To: Center of Turkmenistan' },
+        { coords: [41.8333, 59.9667], popupContent: 'Dashoguz (Дашогуз)' },
+        { coords: [37.5926, 61.8309], popupContent: 'Mary (Мерке)' },
+        { coords: [40.0231, 52.9736], popupContent: 'Turkmenbashi (Түркменбашы)' },
+        { coords: [39.0960, 63.5825], popupContent: 'Turkmenabat (Turkmenabat)' },
+        // Add more markers as needed
+      ],
+      polyline: null
     };
   },
   mounted() {
-    this.initMap();
+    this.initializeMap();
+    this.addMarkers();
+    this.addPolyline();
+    this.fitBounds();
   },
   methods: {
-    initMap() {
-      if (!this.$refs.map) {
-        console.error('Map container element not found.');
-        return;
-      }
-
-      this.map = L.map(this.$refs.map).setView([37.9601, 58.3261], 6); // Initial view centered on Ashgabat
+    initializeMap() {
+      // Initialize the map
+      this.map = L.map(this.$refs.map).setView([38.9697, 59.5563], 6); // Centered on Turkmenistan
 
       // Add OpenStreetMap tile layer
       L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        maxZoom: 18,
-        attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
       }).addTo(this.map);
-
-      // Event listener for adding markers on click
-      this.map.on('click', this.addMarker);
     },
-    addMarker(event) {
-      if (!this.map) {
-        return; // Exit early if map is not initialized
-      }
-
+    addMarkers() {
       const customIcon = L.icon({
         iconUrl: markerIcon,
         iconSize: [32, 32],
@@ -50,57 +50,29 @@ export default {
         popupAnchor: [0, -32] // Point from which the popup should open relative to the iconAnchor
       })
 
-      const { latlng } = event; // Extract the clicked coordinates
-
-      // Create a marker at the clicked coordinates
-      const marker = L.marker(latlng, {icon: customIcon}).addTo(this.map);
-
-      // Bind a popup with coordinates info
-      marker.bindPopup(`Latitude: ${latlng.lat.toFixed(4)}, Longitude: ${latlng.lng.toFixed(4)}`).openPopup();
-
-      // Push the marker to the markers array
-      this.markers.push(marker);
-
-       // Connect the markers with polylines
-       this.connectMarkers();
-    },
-    connectMarkers() {
-      // Clear existing polylines
-      this.polylines.forEach(polyline => {
-        polyline.remove();
+      // Add markers to the map
+      this.markers.forEach(marker => {
+        L.marker(marker.coords, {icon: customIcon}).addTo(this.map)
+          .bindPopup(marker.popupContent);
       });
-      this.polylines = [];
-
-      // Create polylines between markers
-      for (let i = 1; i < this.markers.length; i++) {
-        const prevMarker = this.markers[i - 1];
-        const currMarker = this.markers[i];
-
-        // Create a polyline between current and previous markers
-        const polyline = L.polyline([prevMarker.getLatLng(), currMarker.getLatLng()], {
-          color: 'blue', // Customize the polyline color
-          weight: 3, // Customize the polyline weight
-          opacity: 0.7, // Customize the polyline opacity
-        }).addTo(this.map);
-
-        // Add the polyline to the polylines array
-        this.polylines.push(polyline);
-      }
-    }
-  },
-  setup() {
-    // Clean up the map when the component is unmounted
-    onUnmounted(() => {
-      if (this.map) {
-        this.map.remove();
-      }
-    });
+    },
+    addPolyline() {
+      // Example polyline between two existing markers
+      const fromCoords = this.markers[0].coords;
+      const toCoords = this.markers[1].coords;
+      this.polyline = L.polyline([fromCoords, toCoords], { color: 'blue' }).addTo(this.map);
+    },
+    fitBounds() {
+      // Fit map bounds to markers
+      const bounds = this.markers.map(marker => marker.coords);
+      this.map.fitBounds(bounds);
+    },
   }
 };
 </script>
 
 <style scoped>
-.leaflet-map {
-  height: 800px;
+.map {
+  height: 700px;
 }
 </style>

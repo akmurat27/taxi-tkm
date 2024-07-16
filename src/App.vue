@@ -1,27 +1,23 @@
 <template>
   <RouterView />
-  <MapAsg :locations="locations" />
+  <Modal>
+    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quae dolores, fugiat hic possimus tempora dolorem aliquam ea dolorum unde molestias!</p>
+  </Modal>
 </template>
 
 <script>
 import { RouterView } from 'vue-router';
-import MapAsg from './components/mapAsg.vue';
-
+import Modal from '@/components/Modal.vue';
 
 export default {
   data() {
     return {
-      locations: [
-        { name: 'Ashgabat', coordinates: [37.9601, 58.3261] },
-        { name: 'Mary', coordinates: [37.5938, 61.8307] },
-        // Other locations
-      ]
     };
   },
   name: 'App',
   components: {
-    MapAsg,
     RouterView,
+    Modal
   }
 }
 </script>
