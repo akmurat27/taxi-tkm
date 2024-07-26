@@ -50,7 +50,21 @@
           class="text-lg border border-black rounded-lg"
         />
         <ul>
-          <li @click="selectItem(item)" v-for="item in filteredItems" :key="item" class="cursor-pointer">{{ item }}</li>
+          <li @click="toggleEtraps(item)" v-for="item in filteredVelyats" :key="item.name" class="cursor-pointer">
+            {{ item.name }}
+            <!-- Display etraps if the current velayat is selected -->
+            <ul v-if="selectedVelayat === item">
+              <li
+                v-for="etrap in filteredEtraps"
+                :key="etrap"
+                class="list-item"
+                @click="selectEtrap(etrap)"
+                :class="{ 'selected-etrap': selectedEtrap === etrap }"
+              >
+                {{ etrap.name }}
+              </li>
+            </ul>
+          </li>
         </ul>
         <button @click="searchLocation" class="text-lg">Search</button>
         <span class="close" @click="closeInput">&times;</span>
@@ -72,39 +86,156 @@ import Swal from 'sweetalert2';
 export default {
   data() {
     return {
-      selectedItem: null,
+      selectedVelayat: null,
+      selectedEtrap: null,
       showInput: false,
       showModal: false,
+      isListVisible: false,
       from: '',
       to: '',
       markers: [],
       searchQuery: '',
-      isListVisible: false,
-      items: [
-        'Ashgabat',
-        'Turkmenabat',
-        'Turkmenbashi',
-        'Dashoguz',
-        'Lebap',
-        'Mary',
+      velyats: [
+        {
+          name: 'Ashgabat City',
+          etraps: [
+            { name: 'Bagtyyarlyk districts', coords: [37.95, 58.34] },
+            { name: 'Berkararlyk districts', coords: [37.93, 58.38] },
+            { name: 'Kopetdag districts', coords: [37.91, 58.37] },
+            { name: 'Buzmeyin districts', coords: [38.01, 58.17] },
+          ],
+          coords: [37.95, 58.38]
+        },
+        {
+          name: 'Lebap Province',
+          etraps: [
+            { name: 'Danew districts', coords: [38.10, 63.54] },
+            { name: 'Darganata districts', coords: [39.07, 63.55] },
+            { name: 'Halac districts', coords: [38.98, 63.60] },
+            { name: 'Chardzhou districts', coords: [39.11, 63.58] },
+            { name: 'Hojambaz districts', coords: [38.25, 64.80] },
+            { name: 'Kerki districts', coords: [37.93, 65.27] },
+            { name: 'Koytendag districts', coords: [37.74, 66.62] },
+            { name: 'Sayat districts', coords: [38.78, 63.88] }
+          ],
+          coords: [39.08, 63.56]
+        },
+        {
+          name: 'Balkan Province',
+          etraps: [
+            { name: 'Bereket districts', coords: [39.24, 56.14] },
+            { name: 'Balkanabat districts', coords: [39.51, 54.36] },
+            { name: 'Etrek districts', coords: [37.91, 54.36] },
+            { name: 'Esenguly districts', coords: [38.34, 53.74] },
+            { name: 'Gyzylarbat districts', coords: [40.10, 52.96] },
+            { name: 'Magtymguly districts', coords: [37.83, 54.00] },
+            { name: 'Avaza Etraby districts', coords: [40.02, 52.98] }
+          ],
+          coords: [40.05, 52.97]
+        },
+        {
+          name: 'Dashoguz Province',
+          etraps: [
+            { name: 'Ak Depe districts', coords: [41.57, 59.37] },
+            { name: 'Boldumsaz districts', coords: [41.12, 59.67] },
+            { name: 'Kunyaurgench districts', coords: [42.32, 59.15] },
+            { name: 'Ruhubelent districts', coords: [42.93, 58.38] },
+            { name: 'Gorogly districts', coords: [41.79, 59.99] },
+            { name: 'Shabat districts', coords: [41.78, 60.00] },
+            { name: 'Saparmyrat Turkmenbashi districts', coords: [41.68, 60.00] }
+          ],
+          coords: [41.83, 59.97]
+        },
+        {
+          name: 'Mary Province',
+          etraps: [
+            { name: 'Bayramaly ', coords: [37.61, 62.16] },
+            { name: 'Garagum ', coords: [38.50, 62.41] },
+            { name: 'Mary ', coords: [37.60, 61.83] },
+            { name: 'Tagtabazar ', coords: [35.94, 62.90] },
+            { name: 'Murgap ', coords: [37.75, 61.85] },
+            { name: 'Sakarcage ', coords: [37.54, 61.66] },
+            { name: 'Turkmengala ', coords: [37.58, 62.53] },
+            { name: 'Vekilbazar ', coords: [37.56, 61.81] },
+            { name: 'Yoloten ', coords: [39.24, 62.05] }
+          ],
+          coords: [37.60, 61.83]
+        }
       ],
+      // items: [
+      //   'Ashgabat',
+      //   'Ahal',
+      //   'Balkan',
+      //   'Dashoguz',
+      //   'Lebap',
+      //   'Mary',
+      // ],
     };
   },
   mounted() {
     this.initializeMap();
   },
   computed: {
-    filteredItems() {
-      if (!this.searchQuery) {
-        return this.items;
-      }
-      const letter = this.searchQuery.toLowerCase();
-      return this.items.filter(item =>
-        item.toLowerCase().includes(letter)
+    // filteredItems() {
+    //   if (!this.searchQuery) {
+    //     return this.velyats;
+    //   }
+    //   const letter = this.searchQuery.toLowerCase();
+    //   return this.velyats.filter(item =>
+    //     item.toLowerCase().includes(letter)
+    //   );
+    // },
+    filteredVelyats() {
+      const query = this.searchQuery.toLowerCase();
+      return this.velyats.filter(item =>
+      item.name.toLowerCase().includes(query)
+      );
+    },
+    filteredEtraps() {
+      if (!this.selectedVelayat) return [];
+      const query = this.searchQuery.toLowerCase();
+      return this.selectedVelayat.etraps.filter(etrap =>
+        etrap.name.toLowerCase().includes(query)
       );
     }
   },
   methods: {
+    toggleEtraps(item) {
+      // If the clicked velayat is already selected, deselect it
+      if (this.selectedVelayat === item) {
+        this.selectedVelayat = null;
+        this.clearMap();
+      } else {
+        // Otherwise, select the clicked velayat
+        this.selectedVelayat = item;
+        this.selectedEtrap = null;
+        this.updateMap(item);
+      }
+    },
+    updateMap(item) {
+      const customIcon = L.icon({
+        iconUrl: markerIcon,
+        iconSize: [32, 32],
+        iconAnchor: [16, 32], // Point of the icon which will correspond to marker's location
+        popupAnchor: [0, -32] // Point from which the popup should open relative to the iconAnchor
+      })
+
+      if (!this.map) {
+        this.initializeMap();
+      }
+      this.clearMap();
+
+      if (item) {
+        L.marker(item.coords, { icon: customIcon }).addTo(this.map);
+
+        if (this.selectedEtrap && this.selectedEtrap.coords) {
+          L.marker(this.selectedEtrap.coords, { icon: customIcon }).addTo(this.map);
+          this.map.setView(this.selectedEtrap.coords, 12);
+        } else {
+          this.map.setView(item.coords, 12);
+        }
+      }
+    },
     clearMap() {
       if (this.map) {
         this.map.eachLayer(layer => {
@@ -115,12 +246,13 @@ export default {
       }
     },
     clearSelections() {
+      this.selectedVelayat = null;
+      this.selectedEtrap = null;
       this.clearMap();
     },
-    selectItem(item) {
-      this.searchQuery = item;
-      this.selectedItem = item;
-      this.isListVisible = false;
+    selectEtrap(etrap) {
+      this.selectedEtrap = etrap;
+      this.updateMap(this.selectedVelayat);
     },
     toggleList() {
       this.isListVisible = !this.isListVisible;
